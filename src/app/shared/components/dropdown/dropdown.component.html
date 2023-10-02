@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <input
+    #input
+    type="text"
+    [placeholder]="placeholder"
+    (keyup)="textFilter = input.value; applyFilter()"
+    (blur)="onBlur()"
+  />
+
+  <div class="results" [class.show]="showResults">
+    <div
+      class="option"
+      (click)="selectOption(option)"
+      *ngFor="let option of filteredOptions"
+      [innerHTML]="
+        $any(displayProperty ? option[displayProperty] : option)
+          | boldChars : input.value
+      "
+    ></div>
+  </div>
+</div>

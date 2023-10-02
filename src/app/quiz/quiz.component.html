@@ -1,0 +1,19 @@
+<ng-container *ngIf="questions?.length">
+  <app-question
+    *ngFor="let q of questions; index as i; trackById: trackByQuestion"
+    [question]="q"
+    (change)="userAnswers[i] = $event"
+    (replace)="replace.emit(q)"
+    [canChangeQuestion]="true"
+  >
+  </app-question>
+  <div>
+    <button
+      class="inverse large"
+      *ngIf="userAnswers.length == questions?.length"
+      (click)="submit()"
+    >
+      Submit
+    </button>
+  </div>
+</ng-container>

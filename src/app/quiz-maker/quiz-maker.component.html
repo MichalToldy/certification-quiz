@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-sm-11">
+    <div class="row">
+      <app-dropdown
+        #mainCategory
+        class="col-sm-3"
+        [options]="(categories$ | async) ?? []"
+        displayProperty="name"
+        (select)="selectCategory($event)"
+      ></app-dropdown>
+      <ng-container *ngIf="subCategories$ | async as subCategories">
+        <app-dropdown
+          #subCategory
+          *ngIf="subCategories.length"
+          class="col-sm-3"
+          [options]="subCategories"
+          displayProperty="name"
+        ></app-dropdown>
+      </ng-container>
+      <select #difficulty id="difficultySelect">
+        <option>Select difficulty</option>
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+      <button
+        class="primary"
+        id="createBtn"
+        (click)="createQuiz($any(difficulty.value))"
+      >
+        Create
+      </button>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <app-quiz
+    [questions]="questions$ | async"
+    (replace)="replaceQuestion($event)"
+  ></app-quiz>
+</div>
