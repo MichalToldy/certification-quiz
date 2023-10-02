@@ -6,7 +6,7 @@
         class="col-sm-3"
         [options]="(categories$ | async) ?? []"
         displayProperty="name"
-        (select)="selectCategory($event)"
+        (selectItem)="selectCategory($event)"
       ></app-dropdown>
       <ng-container *ngIf="subCategories$ | async as subCategories">
         <app-dropdown

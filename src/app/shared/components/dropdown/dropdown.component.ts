@@ -19,12 +19,12 @@ export class DropdownComponent<T = unknown> {
 
   private _options: T[] = [];
   @Input() set options(options: T[]) {
-    this.setInputValue('');
+    this.setInputValue(null);
     this._options = options;
     this.applyFilter();
   }
 
-  @Output() select = new EventEmitter<T>();
+  @Output() selectItem = new EventEmitter<T>();
   value: T | null = null;
 
   showResults = false;
@@ -50,28 +50,34 @@ export class DropdownComponent<T = unknown> {
   }
 
   protected selectOption(option: T) {
-    this.setInputValue(this.getValueFromOption(option));
+    this.setInputValue(option);
     this.applyFilter();
 
-    this.value = option;
-    this.select.emit(option);
+    if (option) {
+      this.selectItem.emit(option);
+    }
 
     this.showResults = false;
   }
 
   protected onBlur() {
-    if (this.value !== null) {
-      this.setInputValue(this.getValueFromOption(this.value));
-      this.applyFilter();
-    }
+    // to avoid overwrite new selection with the old selection
+    setTimeout(() => {
+      if (this.value !== null) {
+        this.setInputValue(this.value);
+        this.applyFilter();
+      }
+    }, 100);
   }
 
-  private setInputValue(value: string) {
+  private setInputValue(option: T | null) {
+    const newValue = option ? this.getValueFromOption(option) : '';
     if (this.inputEl) {
-      this.inputEl.nativeElement.value = value;
+      this.inputEl.nativeElement.value = newValue;
     }
-    this.textFilter = value;
-    this.value = null;
+    this.textFilter = newValue;
+
+    this.value = option;
   }
 
   private getValueFromOption(option: T): string {
