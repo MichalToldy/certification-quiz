@@ -4,7 +4,7 @@
     [question]="q"
     (change)="userAnswers[i] = $event"
     (replace)="replace.emit(q)"
-    [canChangeQuestion]="true"
+    [canChangeQuestion]="canChangeQuestion"
   >
   </app-question>
   <div>

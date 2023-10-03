@@ -22,6 +22,7 @@ export class QuizMakerComponent {
   categories$ = new Observable<Category[]>();
   subCategories$!: Observable<Category[]>;
   questions$ = new BehaviorSubject<Question[]>([]);
+  canChangeQuestion = true;
 
   private selectedMainCategory = new Subject<string>();
   private savedQuizeCreation!: { id: string; difficulty: Difficulty };
@@ -105,6 +106,7 @@ export class QuizMakerComponent {
         const index = qs.findIndex((q) => q.question === question.question);
 
         qs[index] = newQuestion[0];
+        this.canChangeQuestion = false;
 
         this.questions$.next(qs);
       });
